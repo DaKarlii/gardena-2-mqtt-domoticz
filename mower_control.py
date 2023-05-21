@@ -3,15 +3,23 @@ import time
 import sys
 import requests
 import json
+import configparser
+import os
+import datetime
 
-# account specific values
-USERNAME = 'USERNAME_GARDENA'
-PASSWORD = 'PASSWORD_GARDENA'
-API_KEY = 'API_KEY_GARDENA'
+# CONFIG
+os.chdir(os.path.dirname(sys.argv[0]))
+configParser = configparser.RawConfigParser()
+configFilePath = r'./../domoticz.cfg'
+configParser.read(configFilePath)
 
-# other constants
+# API URLs
 AUTHENTICATION_HOST = 'https://api.authentication.husqvarnagroup.dev'
 SMART_HOST = 'https://api.smart.gardena.dev'
+
+# account specific values
+CLIENT_ID=configParser.get('Gardena', 'CLIENT_ID')
+CLIENT_SECRET=configParser.get('Gardena', 'CLIENT_SECRET')
 
 # action options for mower
 # START_SECONDS_TO_OVERRIDE - Manual operation, use 'seconds' attribute to define duration.
@@ -19,6 +27,7 @@ SMART_HOST = 'https://api.smart.gardena.dev'
 # PARK_UNTIL_NEXT_TASK - Cancel the current operation and return to charging station.
 # PARK_UNTIL_FURTHER_NOTICE - Cancel the current operation, return to charging station, ignore schedule.
 DEVICE_ACTION = sys.argv[1]
+DEVICE_SECONDS = int(sys.argv[2] if len(sys.argv) > 2 else 0)
 
 def action_mower(mower, action):
     payload = {
@@ -37,8 +46,7 @@ def action_mower(mower, action):
     print(response)
 
 if __name__ == "__main__":
-    payload = {'grant_type': 'password', 'username': USERNAME, 'password': PASSWORD,
-               'client_id': API_KEY}
+    payload = {'grant_type': 'client_credentials', 'client_id': CLIENT_ID, 'client_secret': CLIENT_SECRET}
 
     print("Logging into authentication system...")
     r = requests.post('{}/v1/oauth2/token'.format(AUTHENTICATION_HOST), data=payload)
@@ -47,7 +55,7 @@ if __name__ == "__main__":
 
     headers = {
         "Content-Type": "application/vnd.api+json",
-        "x-api-key": API_KEY,
+        "x-api-key": CLIENT_ID,
         "Authorization-Provider": "husqvarna",
         "Authorization": "Bearer " + auth_token
     }
@@ -64,6 +72,17 @@ if __name__ == "__main__":
 
     for device in devices: 
         if(device['type'] == "MOWER"):
+            if(device['type'] == "MOWER") and (DEVICE_SECONDS > 0):
+                payload = {
+                    "data": {
+                        "type": "MOWER_CONTROL",
+                        "attributes": {
+                            "command": DEVICE_ACTION,
+                            "seconds": DEVICE_SECONDS
+                        },
+                        "id": "does-not-matter"
+                    } 
+                }
             payload = {
                 "data": {
                     "type": "MOWER_CONTROL",
