@@ -1,0 +1,15 @@
+[Unit]
+Description=Gardena Smart Control
+After = network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/python3.10 /PATH/gardena/gardena.py          # Update Path to Script and Python
+User = ladmin
+Group = devops
+Restart = on-failure                                                  # Restart when there are errors
+RestartSec = 5
+TimeoutStartSec = infinity 
+
+[Install]
+WantedBy = multi-user.target
