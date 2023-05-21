@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import websocket
 from threading import Thread
 import time
@@ -5,43 +6,66 @@ import sys
 import requests
 import json
 import paho.mqtt.client as mqtt
+import configparser
+import os
+import datetime
 
-# account specific values
-USERNAME = 'USERNAME_GARDENA'
-PASSWORD = 'PASSWORD_GARDENA'
-API_KEY = 'API_KEY_GARDENA'
+# CONFIG
+os.chdir(os.path.dirname(sys.argv[0]))
+configParser = configparser.RawConfigParser()
+configFilePath = r'./../domoticz.cfg'
+configParser.read(configFilePath)
 
-# other constants
+# API URLs
 AUTHENTICATION_HOST = 'https://api.authentication.husqvarnagroup.dev'
 SMART_HOST = 'https://api.smart.gardena.dev'
 
+# account specific values
+CLIENT_ID=configParser.get('Gardena', 'CLIENT_ID')
+CLIENT_SECRET=configParser.get('Gardena', 'CLIENT_SECRET')
+
 #MQTT
-DOMOTICZ_TOPIC = 'domoticz/in'
-DOMOTICZ_MOWER_STATUS_IDX = 0  #STATUS IDX DOMOTICZ
-DOMOTICZ_MOWER_BATTERY_IDX = 1  #BATTERY IDX DOMOTICZ
-DOMOTICZ_MOWER_RFLINK_IDX = 2 #CONNECTIVITY IDX DOMOTICZ
-DOMOTICZ_MQTT = 'localhost'
-DOMOTICZ_MQTT_PORT = 1883
+DOMOTICZ_TOPIC=configParser.get('MQTT', 'TOPIC')
+DOMOTICZ_MOWER_STATUS_IDX=int(configParser.get('Gardena', 'MOWER_STATUS_IDX'))
+DOMOTICZ_MOWER_BATTERY_IDX=int(configParser.get('Gardena', 'MOWER_BATTERY_IDX'))
+DOMOTICZ_MOWER_RFLINK_IDX=int(configParser.get('Gardena', 'MOWER_RFLINK_IDX'))
+DOMOTICZ_MQTT=configParser.get('MQTT', 'SERVER')
+DOMOTICZ_USER_MQTT=configParser.get('MQTT', 'USERNAME')
+DOMOTICZ_PASSWORD_MQTT=configParser.get('MQTT', 'PASSWORD')
+DOMOTICZ_MQTT_PORT=int(configParser.get('MQTT', 'PORT'))
 
 mqtt_client = mqtt.Client()
+mqtt_client.username_pw_set(DOMOTICZ_USER_MQTT, DOMOTICZ_PASSWORD_MQTT)
 mqtt_client.connect(DOMOTICZ_MQTT,DOMOTICZ_MQTT_PORT,60)
 mqtt_client.loop_start()
 
 class Client:
-    def on_message(self, message):
-        print("msg", message)        
+    def on_message(self, ws, message):
+        x = datetime.datetime.now()
+        print("msg ", x.strftime("%H:%M:%S,%f"))
         mqtt_parse(message)
+        print(message)
         sys.stdout.flush()
 
-    def on_error(self, error):
-        print("error", error)
+    def on_error(self, ws, error):
+        x = datetime.datetime.now()
+        print("error ", x.strftime("%H:%M:%S,%f"))
+        print(error)
 
-    def on_close(self):
+    def on_close(self, ws, close_status_code, close_msg):
         self.live = False
+        x = datetime.datetime.now()
+        print("closed ", x.strftime("%H:%M:%S,%f"))
         print("### closed ###")
+        if close_status_code:
+            print("status code: "+close_status_code)
+        if close_msg:
+            print("status message: "+close_msg)
         sys.exit(0)
 
-    def on_open(self):
+    def on_open(self, ws):
+        x = datetime.datetime.now()
+        print("connected ", x.strftime("%H:%M:%S,%f"))
         print("### connected ###")
 
         self.live = True
@@ -64,8 +88,7 @@ def mqtt_parse(message):
         mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_RFLINK_IDX, 'svalue':  '{}%'.format(response['attributes']['rfLinkLevel']['value'])}))
 
 if __name__ == "__main__":
-    payload = {'grant_type': 'password', 'username': USERNAME, 'password': PASSWORD,
-               'client_id': API_KEY}
+    payload = {'grant_type': 'client_credentials', 'client_id': CLIENT_ID, 'client_secret': CLIENT_SECRET}
 
     print("Logging into authentication system...")
     r = requests.post('{}/v1/oauth2/token'.format(AUTHENTICATION_HOST), data=payload)
@@ -74,8 +97,8 @@ if __name__ == "__main__":
 
     headers = {
         "Content-Type": "application/vnd.api+json",
-        "x-api-key": API_KEY,
-        "Authorization-Provider": "husqvarna",
+        "x-api-key": CLIENT_ID,
+        #"Authorization-Provider": "husqvarna",
         "Authorization": "Bearer " + auth_token
     }
 
