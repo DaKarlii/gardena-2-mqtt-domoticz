@@ -1,1 +1,1 @@
-/usr/bin/python /home/pi/domoticz/scripts/gardena/mower_control.py $1
+/usr/local/bin/python3.10 /PATH/gardena/mower_control.py $1 $2
