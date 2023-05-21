@@ -1,35 +1,43 @@
-# domoticz-mqtt2-gardena
-Python script to status, battery and connectivity data from Gardena using MQTT to Domoticz (or any other MQTT) 
+## gardena-2-mqtt-domoticz
+Python script to status, battery and connectivity data from Gardena Smart System using MQTT to Domoticz (or any other MQTT) 
 Tested this on Gardena Sileno City, but should work on all Gardena/Husqvarna mowers
 
-# Configuration for Gardena/Husqvarna mower data 
+## Preconfig
 * [Setup Domoticz with MQTT server](https://www.domoticz.com/wiki/MQTT)
 * [Install Python3 on your Domoticz server](https://www.domoticz.com/wiki/Using_Python_plugins)
+
+## Configuration to get Gardena/Husqvarna mower data 
 * [Create account for Gardena API and generate API Key](https://developer.husqvarnagroup.cloud/)
+  * Create new Application
+  * Choose a name and a redirect URL as you like
+  * Note Application Key
+  * Note Application Secret
+  * Add the Authentication API and the Gardena API to the application
 * Create 3 dummy devices in Domoticz:
   * Battery: Percentage (DOMOTICZ_MOWER_RFLINK_IDX)
   * Status: Text (DOMOTICZ_MOWER_STATUS_IDX)
   * Connectivity: Percentage (DOMOTICZ_MOWER_RFLINK_IDX)
-* Edit the gardena.py and edit the variables listed, make sure the MQTT is pointing to the right IP (default: Localhost). 
-* Run the script:  ``` python3 gardena.py```
-* Check if the dummy devices receive the correct values, if not, make sure your variables are all set correctly. 
+* Edit the domoticz.cfg and edit the variables listed, make sure the MQTT is pointing to the right IP/URL (default: Localhost). 
+* Run the script:  ```python3 gardena.py```
+* Check if the dummy devices receive the correct values, if not, make sure your variables are all set correctly and all python addons are installed. ```python3 -m pip install MODULNAME```
 
-# Configuration for Gardena mower control
-* [Setup Domoticz with MQTT server](https://www.domoticz.com/wiki/MQTT)
-* [Install Python3 on your Domoticz server](https://www.domoticz.com/wiki/Using_Python_plugins)
-* Create folder 'gardena' in ``` /home/pi/domoticz/scripts ```
-* Copy ``` mower_control.sh ``` and ``` mower_control.py ```in the created folder
-* Create 3 dummy devices in Domoticz:
-    *   Single button: Start mowing
-    *   Single button: Park until next operation
-    *   Single button: Park until further notice
-* Edit the button action in Domoticz with On/Off action  ```  script://gardena/mower_control.sh "INSERT ACTION KEY HERE" ``` 
-    * Fill in the action key based on button (for example: ```  script://gardena/mower_control.sh "START_DONT_OVERRIDE" ```):    
-        * START_SECONDS_TO_OVERRIDE - Manual operation, use 'seconds' attribute to define duration.
+## Configuration for Gardena mower control
+* Create a dummy devices in Domoticz:
+    *   Select button: Robot Action
+* Edit the button action in Domoticz with On/Off action  ```script:///gardena/mower_control.sh "INSERT ACTION KEY HERE" ``` 
+    * Fill in the action key based on button (for example: ```script:///gardena/mower_control.sh "START_DONT_OVERRIDE" ```):    
+        * START_SECONDS_TO_OVERRIDE - Manual operation add the time in seconds as second attribute.
         * START_DONT_OVERRIDE - Automatic operation.
         * PARK_UNTIL_NEXT_TASK - Cancel the current operation and return to charging station.
         * PARK_UNTIL_FURTHER_NOTICE - Cancel the current operation, return to charging station, ignore schedule.
 
-# Auto startup
-To run the script in the background by default, install it using [PM2](https://pm2.keymetrics.io/).
+## Auto startup
+* Edit the gardena.service file to the current paths.
+* Copy the file to the service folder (e.g.: ```sudo cp gardena.service /lib/systemd/system/``` )
+* Reload the Service Daemon (```sudo systemctl daemon-reload``` )
+* Start the Service (```sudo systemctl enable gardena```)
+* Check Status / Start / Stop or Restart with ```sudo service gardena status|start|stop|restart```
+
+## Forked
+This is a forke from https://github.com/Kdonkers/domoticz-mqtt2-gardena
 
