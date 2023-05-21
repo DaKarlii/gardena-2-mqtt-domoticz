@@ -10,7 +10,7 @@ import datetime
 # CONFIG
 os.chdir(os.path.dirname(sys.argv[0]))
 configParser = configparser.RawConfigParser()
-configFilePath = r'./../domoticz.cfg'
+configFilePath = r'./domoticz.cfg'
 configParser.read(configFilePath)
 
 # API URLs
