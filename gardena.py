@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# v1.0 - 20230521 - Initial working Version for Domoticz
+# v1.1 - 20230522 - Add nice looking Status Messages for Domoticz with Language Files
 import websocket
 from threading import Thread
 import time
@@ -13,7 +15,7 @@ import datetime
 # CONFIG
 os.chdir(os.path.dirname(sys.argv[0]))
 configParser = configparser.RawConfigParser()
-configFilePath = r'./domoticz.cfg'
+configFilePath = r'./../domoticz.cfg'
 configParser.read(configFilePath)
 
 # API URLs
@@ -23,6 +25,8 @@ SMART_HOST = 'https://api.smart.gardena.dev'
 # account specific values
 CLIENT_ID=configParser.get('Gardena', 'CLIENT_ID')
 CLIENT_SECRET=configParser.get('Gardena', 'CLIENT_SECRET')
+CLIENT_API_KEY=configParser.get('Gardena', 'API_KEY')
+CLIENT_LANGUAGE=configParser.get('Gardena', 'CLIENT_LANGUAGE')
 
 #MQTT
 DOMOTICZ_TOPIC=configParser.get('MQTT', 'TOPIC')
@@ -51,6 +55,7 @@ class Client:
         x = datetime.datetime.now()
         print("error ", x.strftime("%H:%M:%S,%f"))
         print(error)
+        sys.exit(0)
 
     def on_close(self, ws, close_status_code, close_msg):
         self.live = False
@@ -61,7 +66,7 @@ class Client:
             print("status code: "+close_status_code)
         if close_msg:
             print("status message: "+close_msg)
-        sys.exit(0)
+        sys.exit(1)
 
     def on_open(self, ws):
         x = datetime.datetime.now()
@@ -79,10 +84,18 @@ class Client:
 def mqtt_parse(message):
     response = json.loads(message)
     response_type = response['type']
+    with open("./language.json") as txtfile:
+        languagefile=json.loads(txtfile.read())
 
     # Types are DEVICE, LOCATION, COMMON and MOWER
-    if response_type == 'MOWER': 
-        mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_STATUS_IDX, 'svalue': response['attributes']['activity']['value']}))
+    if response_type == 'MOWER':
+        response_value = response['attributes']['activity']['value']
+        title = languagefile['values'][response_value][CLIENT_LANGUAGE]
+        # print(title)  # For Debug
+        mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_STATUS_IDX, 'svalue': title}))
+        
+        # Default Request
+        # mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_STATUS_IDX, 'svalue': response['attributes']['activity']['value']}))
     elif response_type == 'COMMON':
         mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_BATTERY_IDX, 'svalue': '{}%'.format(response['attributes']['batteryLevel']['value'])}))
         mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_RFLINK_IDX, 'svalue':  '{}%'.format(response['attributes']['rfLinkLevel']['value'])}))
@@ -97,8 +110,7 @@ if __name__ == "__main__":
 
     headers = {
         "Content-Type": "application/vnd.api+json",
-        "x-api-key": CLIENT_ID,
-        #"Authorization-Provider": "husqvarna",
+        "x-api-key": CLIENT_API_KEY,
         "Authorization": "Bearer " + auth_token
     }
 
@@ -124,7 +136,7 @@ if __name__ == "__main__":
     response = r.json()
     websocket_url = response["data"]["attributes"]["url"]
 
-    # websocket.enableTrace(True)
+    websocket.enableTrace(True)
     client = Client()
     ws = websocket.WebSocketApp(
         websocket_url,
@@ -133,3 +145,4 @@ if __name__ == "__main__":
         on_close=client.on_close)
     ws.on_open = client.on_open
     ws.run_forever(ping_interval=150, ping_timeout=1)
+       
