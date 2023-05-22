@@ -1,0 +1,51 @@
+{
+  "directory": "language",
+  "values": {
+    "PAUSED": 
+        {
+            "german": "Pausiert",
+            "english": "Paused"
+        },
+    "OK_CUTTING":
+        {
+            "german": "Mähen (Auto-Mod)",
+            "english": "Mowing (Auto-Mod)"
+        },
+    "OK_CUTTING_TIMER_OVERRIDDEN":
+        {
+            "german": "Mähen (Manual Start)",
+            "english": "Mowing (Manual Start)"
+        },
+    "OK_SEARCHING":
+        {
+            "german": "Suche Ladestation",
+            "english": "Searching for Charging Station"
+        },
+    "OK_LEAVING":
+        {
+            "german": "Verlasse Ladestation",
+            "english": "Leave Charging Station"
+        },
+    "OK_CHARGING":
+        {
+            "german": "In Station Laden",
+            "english": "In Charging Station for charging"
+        },
+    "PARKED_TIMER":
+        {
+            "german": "In Station geparkt (Auto-Mod)",
+            "english": "Parked in Charging Station (Auto-Mod)"
+            
+        },
+    "PARKED_PARK_SELECTED":
+        {
+            "german": "In Station gesperrt",
+            "english": "Locked in Charging Station"
+        },
+    "PARKED_AUTOTIMER":
+        {
+            "german": "In Station geparkt (SensorControl)",
+            "english": "Locked in Charging Station (SensorControl)"
+        }
+  }
+}
