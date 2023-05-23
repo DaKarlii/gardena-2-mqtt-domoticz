@@ -1,13 +1,14 @@
 [Unit]
 Description=Gardena Smart Control
 After = network.target
+StartLimitIntervalSec=60
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/python3.10 /PATH/gardena/gardena.py          # Update Path to Script and Python
+ExecStart=/usr/local/bin/python3.10 /repo/ops-domoticz-toolset/gardena/gardena.py
 User = ladmin
 Group = devops
-Restart = on-failure                                                  # Restart when there are errors
+Restart = always
 RestartSec = 5
 TimeoutStartSec = infinity 
 
