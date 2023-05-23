@@ -10,7 +10,7 @@ import datetime
 # CONFIG
 os.chdir(os.path.dirname(sys.argv[0]))
 configParser = configparser.RawConfigParser()
-configFilePath = r'./domoticz.cfg'
+configFilePath = r'./../domoticz.cfg'
 configParser.read(configFilePath)
 
 # API URLs
@@ -83,15 +83,18 @@ if __name__ == "__main__":
                         "id": "does-not-matter"
                     } 
                 }
-            payload = {
-                "data": {
-                    "type": "MOWER_CONTROL",
-                    "attributes": {
-                        "command": DEVICE_ACTION
-                    },
-                    "id": "does-not-matter"
-                } 
-            }
+                #print("Command",DEVICE_ACTION,"was triggerd for",DEVICE_SECONDS,"Seconds" )
+            else:
+                payload = {
+                    "data": {
+                        "type": "MOWER_CONTROL",
+                        "attributes": {
+                            "command": DEVICE_ACTION
+                        },
+                        "id": "does-not-matter"
+                    } 
+                }
+                #print("Command",DEVICE_ACTION,"was triggerd")
             r = requests.put('{}/v1/command/{}'.format(SMART_HOST, device['id']), json=payload, headers=headers)
             assert r.status_code == 202, r
             print("Command {} excecuted...".format(DEVICE_ACTION))
