@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # v1.0 - 20230521 - Initial working Version for Domoticz
 # v1.1 - 20230522 - Add nice looking Status Messages for Domoticz with Language Files
+# v1.2 - 20230523 - Fix some Bugs when running as Service
 import websocket
 from threading import Thread
 import time
@@ -15,7 +16,7 @@ import datetime
 # CONFIG
 os.chdir(os.path.dirname(sys.argv[0]))
 configParser = configparser.RawConfigParser()
-configFilePath = r'./domoticz.cfg'
+configFilePath = r'./../domoticz.cfg'
 configParser.read(configFilePath)
 
 # API URLs
@@ -46,31 +47,33 @@ mqtt_client.loop_start()
 class Client:
     def on_message(self, ws, message):
         x = datetime.datetime.now()
-        print("msg ", x.strftime("%H:%M:%S,%f"))
+        print("API Message arrived ", x.strftime("%H:%M:%S,%f"))
         mqtt_parse(message)
-        print(message)
+        #print(message)     #Disabled print to reduce Log amount
         sys.stdout.flush()
 
     def on_error(self, ws, error):
         x = datetime.datetime.now()
-        print("error ", x.strftime("%H:%M:%S,%f"))
+        print("An error occurred ", x.strftime("%H:%M:%S,%f"))
         print(error)
-        sys.exit(0)
 
     def on_close(self, ws, close_status_code, close_msg):
         self.live = False
         x = datetime.datetime.now()
-        print("closed ", x.strftime("%H:%M:%S,%f"))
+        print("Connection closed ", x.strftime("%H:%M:%S,%f"))
         print("### closed ###")
-        if close_status_code:
-            print("status code: "+close_status_code)
-        if close_msg:
-            print("status message: "+close_msg)
-        sys.exit(1)
+        try:
+            if close_status_code:
+                print("status code: "+ str(close_status_code))
+            if close_msg:
+                print("status message: "+ close_msg)
+        except:
+            print("Error while closing the connection.")
+        sys.exit(0)
 
     def on_open(self, ws):
         x = datetime.datetime.now()
-        print("connected ", x.strftime("%H:%M:%S,%f"))
+        print("Connection established ", x.strftime("%H:%M:%S,%f"))
         print("### connected ###")
 
         self.live = True
@@ -145,4 +148,3 @@ if __name__ == "__main__":
         on_close=client.on_close)
     ws.on_open = client.on_open
     ws.run_forever(ping_interval=150, ping_timeout=1)
-       
