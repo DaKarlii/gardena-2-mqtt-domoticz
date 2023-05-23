@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # v1.0 - 20230521 - Initial working Version for Domoticz
 # v1.1 - 20230522 - Add nice looking Status Messages for Domoticz with Language Files
+# v1.2 - 20230523 - Fix some Bugs when running as Service
 import websocket
 from threading import Thread
 import time
@@ -68,6 +69,7 @@ class Client:
                 print("status message: "+ close_msg)
         except:
             print("Error while closing the connection.")
+        sys.exit(0)
 
     def on_open(self, ws):
         x = datetime.datetime.now()
@@ -137,14 +139,12 @@ if __name__ == "__main__":
     response = r.json()
     websocket_url = response["data"]["attributes"]["url"]
 
-    while True:
-        websocket.enableTrace(True)
-        client = Client()
-        ws = websocket.WebSocketApp(
-           websocket_url,
-            on_message=client.on_message,
-            on_error=client.on_error,
-            on_close=client.on_close)
-        ws.on_open = client.on_open
-        ws.run_forever(ping_interval=150, ping_timeout=1)
-       
+    websocket.enableTrace(True)
+    client = Client()
+    ws = websocket.WebSocketApp(
+        websocket_url,
+        on_message=client.on_message,
+        on_error=client.on_error,
+        on_close=client.on_close)
+    ws.on_open = client.on_open
+    ws.run_forever(ping_interval=150, ping_timeout=1)
