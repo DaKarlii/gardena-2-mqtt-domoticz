@@ -2,6 +2,8 @@
 # v1.0 - 20230521 - Initial working Version for Domoticz
 # v1.1 - 20230522 - Add nice looking Status Messages for Domoticz with Language Files
 # v1.2 - 20230523 - Fix some Bugs when running as Service
+# v1.3 - 20230506 - Add Support for Error Messages from API
+
 import websocket
 from threading import Thread
 import time
@@ -92,13 +94,21 @@ def mqtt_parse(message):
 
     # Types are DEVICE, LOCATION, COMMON and MOWER
     if response_type == 'MOWER':
-        response_value = response['attributes']['activity']['value']
-        title = languagefile['values'][response_value][CLIENT_LANGUAGE]
-        # print(title)  # For Debug
-        mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_STATUS_IDX, 'svalue': title}))
-        
-        # Default Request
-        # mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_STATUS_IDX, 'svalue': response['attributes']['activity']['value']}))
+        response_state = response['attributes']['state']['value']
+        if response_state == 'OK':
+            response_value = response['attributes']['activity']['value']
+            title = languagefile['values'][response_value][CLIENT_LANGUAGE]
+            mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_STATUS_IDX, 'nvalue': 1, 'svalue': title}))
+
+        elif response_state == 'ERROR':
+            response_value = response['attributes']['lastErrorCode']['value']
+            title = languagefile['values'][response_value][CLIENT_LANGUAGE]
+            mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_STATUS_IDX, 'nvalue': 4, 'svalue': title}))
+
+        else:
+            # Default Request
+            mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_STATUS_IDX, 'nvalue': 0, 'svalue': response['attributes']['activity']['value']}))
+
     elif response_type == 'COMMON':
         mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_BATTERY_IDX, 'svalue': '{}%'.format(response['attributes']['batteryLevel']['value'])}))
         mqtt_client.publish(DOMOTICZ_TOPIC, json.dumps({'idx': DOMOTICZ_MOWER_RFLINK_IDX, 'svalue':  '{}%'.format(response['attributes']['rfLinkLevel']['value'])}))
