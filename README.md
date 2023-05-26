@@ -15,7 +15,7 @@ Tested this on Gardena Sileno City, but should work on all Gardena/Husqvarna mow
   * Add the Authentication API and the Gardena API to the application
 * Create 3 dummy devices in Domoticz:
   * Battery: Percentage (DOMOTICZ_MOWER_RFLINK_IDX)
-  * Status: Text (DOMOTICZ_MOWER_STATUS_IDX)
+  * Status: Alert (DOMOTICZ_MOWER_STATUS_IDX)
   * Connectivity: Percentage (DOMOTICZ_MOWER_RFLINK_IDX)
 * Edit the domoticz.cfg and edit the variables listed, make sure the MQTT is pointing to the right IP/URL (default: Localhost). 
 * Run the script:  ```python3 gardena.py```
