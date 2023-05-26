@@ -1,51 +1,345 @@
 {
-  "directory": "language",
+  "directory": "Language",
   "values": {
-    "PAUSED": 
-        {
-            "german": "Pausiert",
-            "english": "Paused"
-        },
-    "OK_CUTTING":
-        {
-            "german": "Mähen (Auto-Mod)",
-            "english": "Mowing (Auto-Mod)"
-        },
-    "OK_CUTTING_TIMER_OVERRIDDEN":
-        {
-            "german": "Mähen (Manual Start)",
-            "english": "Mowing (Manual Start)"
-        },
-    "OK_SEARCHING":
-        {
-            "german": "Suche Ladestation",
-            "english": "Searching for Charging Station"
-        },
-    "OK_LEAVING":
-        {
-            "german": "Verlasse Ladestation",
-            "english": "Leave Charging Station"
-        },
-    "OK_CHARGING":
-        {
-            "german": "In Station Laden",
-            "english": "In Charging Station for charging"
-        },
-    "PARKED_TIMER":
-        {
-            "german": "In Station geparkt (Auto-Mod)",
-            "english": "Parked in Charging Station (Auto-Mod)"
-            
-        },
-    "PARKED_PARK_SELECTED":
-        {
-            "german": "In Station gesperrt",
-            "english": "Locked in Charging Station"
-        },
-    "PARKED_AUTOTIMER":
-        {
-            "german": "In Station geparkt (SensorControl)",
-            "english": "Locked in Charging Station (SensorControl)"
-        }
-  }
+        "PAUSED": 
+            {
+                "german": "Pausiert",
+                "english": "Paused"
+            },
+        "OK_CUTTING":
+            {
+                "german": "Mähen (Auto-Mod)",
+                "english": "Mowing (Auto-Mod)"
+            },
+        "OK_CUTTING_TIMER_OVERRIDDEN":
+            {
+                "german": "Mähen (Manual Start)",
+                "english": "Mowing (Manual Start)"
+            },
+        "OK_SEARCHING":
+            {
+                "german": "Suche Ladestation",
+                "english": "Searching for Charging Station"
+            },
+        "OK_LEAVING":
+            {
+                "german": "Verlasse Ladestation",
+                "english": "Leave Charging Station"
+            },
+        "OK_CHARGING":
+            {
+                "german": "In Station Laden",
+                "english": "In Charging Station for charging"
+            },
+        "PARKED_TIMER":
+            {
+                "german": "In Station geparkt (Auto-Mod)",
+                "english": "Parked in Charging Station (Auto-Mod)"
+            },
+        "PARKED_PARK_SELECTED":
+            {
+                "german": "In Station gesperrt",
+                "english": "Locked in Charging Station"
+            },
+        "PARKED_AUTOTIMER":
+            {
+                "german": "In Station geparkt (SensorControl)",
+                "english": "Locked in Charging Station (SensorControl)"
+            },
+        "NO_MESSAGE":
+            {
+                "german": "Keine Erklärung angegeben",
+                "english": "No explanation provided"
+            },
+       "OUTSIDE_WORKING_AREA":
+            {
+                "german": "Außerhalb des Arbeitsbereichs",
+                "english": "Outside working area"
+            },
+       "NO_LOOP_SIGNAL":
+            {
+                "german": "Kein Schleifensignal",
+                "english": "No loop signal"
+            },
+       "WRONG_LOOP_SIGNAL":
+            {
+                "german": "Falsches Schleifensignal",
+                "english": "Wrong loop signal"
+            },
+       "LOOP_SENSOR_PROBLEM_FRONT":
+            {
+                "german": "Problem mit dem Schleifensensor vorne",
+                "english": "Loop sensor problem front"
+            },
+       "LOOP_SENSOR_PROBLEM_REAR":
+            {
+                "german": "Problem mit dem Schleifensensor hinten",
+                "english": "Loop sensor problem rear"
+            },
+       "LOOP_SENSOR_PROBLEM_LEFT":
+            {
+                "german": "Problem mit dem Schleifensensor links",
+                "english": "Loop sensor problem left"
+            },
+       "LOOP_SENSOR_PROBLEM_RIGHT":
+            {
+                "german": "Problem mit dem Schleifensensor rechts",
+                "english": "Loop sensor problem right"
+            },
+       "WRONG_PIN_CODE":
+            {
+                "german": "Falscher PIN-Code",
+                "english": "Wrong PIN code"
+            },
+       "TRAPPED":
+            {
+                "german": "Gefangen",
+                "english": "Trapped"
+            },
+       "UPSIDE_DOWN":
+            {
+                "german": "Verkehrt herum",
+                "english": "Upside down"
+            },
+       "EMPTY_BATTERY":
+            {
+                "german": "Leere Batterie",
+                "english": "Empty battery"
+            },
+       "NO_DRIVE":
+            {
+                "german": "Kein Antrieb",
+                "english": "No drive"
+            },
+       "TEMPORARILY_LIFTED":
+            {
+                "german": "Mäher angehoben",
+                "english": "Mower lifted"
+            },
+       "LIFTED":
+            {
+                "german": "Angehoben",
+                "english": "Lifted"
+            },
+       "STUCK_IN_CHARGING_STATION":
+            {
+                "german": "Steckt in der Ladestation fest",
+                "english": "Stuck in charging station"
+            },
+       "CHARGING_STATION_BLOCKED":
+            {
+                "german": "Ladestation blockiert",
+                "english": "Charging station blocked"
+            },
+       "COLLISION_SENSOR_PROBLEM_REAR":
+            {
+                "german": "Problem mit dem Kollisionssensor hinten",
+                "english": "Collision sensor problem rear"
+            },
+       "COLLISION_SENSOR_PROBLEM_FRONT":
+            {
+                "german": "Problem mit dem Kollisionssensor vorne",
+                "english": "Collision sensor problem front"
+            },
+       "WHEEL_MOTOR_BLOCKED_RIGHT":
+            {
+                "german": "Radmotor rechts blockiert ",
+                "english": "Wheel motor blocked right"
+            },
+       "WHEEL_MOTOR_BLOCKED_LEFT":
+            {
+                "german": "Radmotor links blockiert",
+                "english": "Wheel motor blocked left"
+            },
+       "WHEEL_DRIVE_PROBLEM_RIGHT":
+            {
+                "german": "Problem mit dem Radantrieb richtig",
+                "english": "Wheel drive problem right"
+            },
+       "WHEEL_DRIVE_PROBLEM_LEFT":
+            {
+                "german": "Problem mit dem Radantrieb links",
+                "english": "Wheel drive problem left"
+            },
+       "CUTTING_MOTOR_DRIVE_DEFECT":
+            {
+                "german": "Schneidsystem blockiert",
+                "english": "Cutting system blocked"
+            },
+       "CUTTING_SYSTEM_BLOCKED":
+            {
+                "german": "Schneidsystem blockiert",
+                "english": "Cutting system blocked"
+            },
+       "INVALID_SUB_DEVICE_COMBINATION":
+            {
+                "german": "Ungültige Untergerätekombination",
+                "english": "Invalid sub device combination"
+            },
+       "MEMORY_CIRCUIT_PROBLEM":
+            {
+                "german": "Problem mit dem Speicherschaltkreis",
+                "english": "Memory circuit problem"
+            },
+       "CHARGING_SYSTEM_PROBLEM":
+            {
+                "german": "Problem mit dem Ladesystem",
+                "english": "Charging system problem"
+            },
+       "STOP_BUTTON_PROBLEM":
+            {
+                "german": "Problem mit der STOP-Taste",
+                "english": "STOP button problem"
+            },
+       "TILT_SENSOR_PROBLEM":
+            {
+                "german": "Problem mit dem Neigungssensor",
+                "english": "Tilt sensor problem"
+            },
+       "MOWER_TILTED":
+            {
+                "german": "Mäher gekippt",
+                "english": "Mower tilted"
+            },
+       "WHEEL_MOTOR_OVERLOADED_RIGHT":
+            {
+                "german": "Radmotor rechts überlastet",
+                "english": "Wheel motor overloaded right"
+            },
+       "WHEEL_MOTOR_OVERLOADED_LEFT":
+            {
+                "german": "Radmotor links überlastet",
+                "english": "Wheel motor overloaded left"
+            },
+       "CHARGING_CURRENT_TOO_HIGH":
+            {
+                "german": "Ladestrom zu hoch",
+                "english": "Charging current too high"
+            },
+       "ELECTRONIC_PROBLEM":
+            {
+                "german": "Elektronisches Problem",
+                "english": "Electronic problem"
+            },
+       "CUTTING_MOTOR_PROBLEM":
+            {
+                "german": "Problem mit dem Schneidmotor",
+                "english": "Cutting motor problem"
+            },
+       "LIMITED_CUTTING_HEIGHT_RANGE":
+            {
+                "german": "Begrenzter Schnitthöhenbereich",
+                "english": "Limited cutting height range"
+            },
+       "CUTTING_HEIGHT_PROBLEM_DRIVE":
+            {
+                "german": "Problem mit Schnitthöhe Fahren",
+                "english": "Cutting height problem drive"
+            },
+       "CUTTING_HEIGHT_PROBLEM_CURR":
+            {
+                "german": "Problem mit Schnitthöhe Aktuell",
+                "english": "Cutting height problem current"
+            },
+       "CUTTING_HEIGHT_PROBLEM_DIR":
+            {
+                "german": "Problem mit Schnitthöhe  Richtung",
+                "english": "Cutting height problem direction"
+            },
+       "CUTTING_HEIGHT_BLOCKED":
+            {
+                "german": "Schnitthöhe blockiert",
+                "english": "Cutting height blocked"
+            },
+       "CUTTING_HEIGHT_PROBLEM":
+            {
+                "german": "Problem mit der Schnitthöhe",
+                "english": "Cutting height problem"
+            },
+       "BATTERY_PROBLEM":
+            {
+                "german": "Batterieproblem",
+                "english": "Battery problem"
+            },
+       "TOO_MANY_BATTERIES":
+            {
+                "german": "Batterieproblem",
+                "english": "Battery problem"
+            },
+       "ALARM_MOWER_SWITCHED_OFF":
+            {
+                "german": "Alarm Mäher ausgeschaltet",
+                "english": "Alarm Mower switched off"
+            },
+       "ALARM_MOWER_STOPPED":
+            {
+                "german": "Alarm Mäher blieb stehen",
+                "english": "Alarm Mower stopped"
+            },
+       "ALARM_MOWER_LIFTED":
+            {
+                "german": "Alarm Mäher angehoben",
+                "english": "Alarm Mower lifted"
+            },
+       "ALARM_MOWER_TILTED":
+            {
+                "german": "Alarm Mäher gekippt",
+                "english": "Alarm Mower tilted"
+            },
+       "ALARM_MOWER_IN_MOTION":
+            {
+                "german": "Alarm Mäher in Bewegung",
+                "english": "Alarm Mower in motion"
+            },
+       "ALARM_OUTSIDE_GEOFENCE":
+            {
+                "german": "Alarm Außerhalb des Geofence",
+                "english": "Alarm Outside geofence"
+            },
+       "SLIPPED":
+            {
+                "german": "Der Mäher ist ausgerutscht Situation wurde durch das Bewegungsmuster nicht gelöst",
+                "english": "Slipped Mower has SlippedSituation not solved with moving pattern"
+            },
+       "INVALID_BATTERY_COMBINATION":
+            {
+                "german": "Ungültige Batterie- oder Batterietypenkombination",
+                "english": "Invalid battery or battery types combination "
+            },
+       "UNINITIALISED":
+            {
+                "german": "Funkmodul hat nicht initialisierten Wert gesendet. Status des Mähers unbekannt",
+                "english": "Radio module sent uninitialised value We do not know the status of the mower"
+            },
+       "WAIT_UPDATING":
+            {
+                "german": "Mäher wartet Firmware wird aktualisiert",
+                "english": "Mower waiting updating firmware"
+            },
+       "WAIT_POWER_UP":
+            {
+                "german": "Mäher fährt hoch",
+                "english": "Mower powering up"
+            },
+       "OFF_DISABLED":
+            {
+                "german": "Mäher am Hauptschalter deaktiviert",
+                "english": "Mower disabled on main switch"
+            },
+       "OFF_HATCH_OPEN":
+            {
+                "german": "Mäher im Wartezustand mit geöffneter Luke",
+                "english": "Mower in waiting state with hatch open"
+            },
+       "OFF_HATCH_CLOSED":
+            {
+                "german": "Mäher im Wartezustand mit geschlossener Luke",
+                "english": "Mower in waiting state with hatch closed"
+            },
+       "PARKED_DAILY_LIMIT_REACHED":
+            {
+                "german": "Der Mäher hat den Mähvorgang abgeschlossen da das Tageslimit erreicht ist",
+                "english": "Mower has completed cutting due to daily limit reached"
+            }
+    }
 }
